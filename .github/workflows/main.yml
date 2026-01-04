@@ -1,0 +1,29 @@
+name: main workflow
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  issue:
+
+    permissions:
+      issues: write
+      
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: issue label
+        run: |
+          if [[ "${{ github.event.issue.title }}" == *"bug"* ]]; then
+            gh issue edit ${{ github.event.issue.number }} --add-label "bug"
+
+          elif [[ "${{ github.event.issue.title }}" == *"feature"* ]]; then
+            gh issue edit ${{ github.event.issue.number }} --add-label "feature"
+          fi
+
